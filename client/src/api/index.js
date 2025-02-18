@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5001/posts';
+const url = 'https://memories-1-q2gl.onrender.com';
 
 export const fetchPosts = () => axios.get(url);
 export const createPost = (newPost) => axios.post(url, newPost);
