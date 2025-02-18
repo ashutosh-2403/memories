@@ -19,12 +19,18 @@ app.use(cors());
 app.use('/posts', postRoutes);
 
 const PORT = process.env.PORT || 5001;
+const CONNECTION_URL = process.env.CONNECTION_URL;
 
-mongoose.connect(process.env.CONNECTION_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+if (!CONNECTION_URL) {
+    console.error('❌ CONNECTION_URL is not defined. Check your .env file or Render environment variables.');
+    process.exit(1);
+}
+
+mongoose.connect(CONNECTION_URL)
     .then(() => {
         app.listen(PORT, () => console.log(`✅ Server Running on Port: http://localhost:${PORT}`));
     })
-    .catch((error) => console.log(`❌ Database connection error: ${error.message}`));
+    .catch((error) => {
+        console.error(`❌ Database connection error: ${error.message}`);
+        process.exit(1);
+    });
